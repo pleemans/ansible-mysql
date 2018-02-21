@@ -1,6 +1,6 @@
 ---
 - name: Add the OS specific variables
-  include_vars: "{{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_os_family }}.{{ ansible_distribution_major_version }}.yml"
 
 - name: Install the mysql packages in Redhat derivatives
   yum: name={{ item }} state=installed
@@ -101,5 +101,3 @@
 - name: Change the master in slave to start the replication
   mysql_replication: mode=changemaster master_host={{ mysql_repl_master }} master_log_file={{ repl_stat.File }} master_log_pos={{ repl_stat.Position }} master_user={{ mysql_repl_user[0].name }} master_password={{ mysql_repl_user[0].pass }}
   when: slave|failed and mysql_repl_role == 'slave' and mysql_repl_master is defined
-
-
